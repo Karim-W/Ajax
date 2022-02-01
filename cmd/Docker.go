@@ -2,24 +2,21 @@ package cmd
 
 import (
 	"fmt"
-	"os/exec"
 
 	"github.com/spf13/cobra"
 )
 
-var lsCmd = &cobra.Command{
+var DockerCmd = &cobra.Command{
 	Use:     "d",
 	Aliases: []string{"docker"},
 	Short:   "Manage Docker Containers",
 	Long:    `Manage Docker Containers`,
 	Run: func(cmd *cobra.Command, args []string) {
-		f := exec.Command("ls", "-l")
-		stdout, _ := f.Output()
-		fmt.Println(string(stdout))
-
+		// ls := cmd.Flag("-o").Value.String()
+		fmt.Println("Docker Managment Module")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(lsCmd)
+	RootCmd.AddCommand(DockerCmd)
 }
