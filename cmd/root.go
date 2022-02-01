@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var RootCmd = &cobra.Command{
+var rootCmd = &cobra.Command{
 	Use:   "ajax",
 	Short: "Ajax is a tool for simlifying dev tools",
 	Long:  "Ajax is a tool for simlifying dev tools.",
@@ -24,10 +24,16 @@ var RootCmd = &cobra.Command{
 
 	},
 }
+var Verbose bool
+var Source string
 
 func Execute() {
-	err := RootCmd.Execute()
+	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
+}
+
+func init() {
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
 }
