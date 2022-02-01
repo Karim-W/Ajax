@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/karim-w/cmd"
 
 func main() {
-	fmt.Println("Ajax")
+	cmd.Execute()
 }
