@@ -3,6 +3,7 @@ package DockerServices
 import (
 	"fmt"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/karim-w/Ajax/Utils/ExecuteCommandsUtility"
@@ -13,6 +14,8 @@ func DockerService(args map[string]string) {
 		handleListContainers()
 	} else if args["get"] != "" {
 		handlePullContainer(args["get"])
+	} else if args["kill"] != "" {
+		handleKillContainer(args["kill"])
 	}
 
 }
@@ -22,6 +25,8 @@ func handleListContainers() {
 	stdout, _ := f.CombinedOutput()
 	stdout = []byte(strings.ReplaceAll(string(stdout), "\n", ""))
 	data := strings.Split(string(stdout), "//\\//\\")
+	total := len(data)
+	fmt.Println(total)
 	data = data[2:]
 	fmt.Println("#\tContainerID\t\t Label")
 	fmt.Println("--------------------------------------------------------------------------------------------")
@@ -29,7 +34,7 @@ func handleListContainers() {
 	for i, v := range data {
 		if i%2 != 0 {
 			index := i/2 + 1
-			f := fmt.Sprintf("%d\t%s\t\t%s", index, data[i-1], v)
+			f := fmt.Sprintf("%d\t%s\t\t%s", index-1, data[i-1], v)
 			fmt.Println(f)
 		}
 	}
@@ -47,4 +52,29 @@ func handlePullContainer(cName string) {
 		fmt.Println(err)
 	}
 	fmt.Println("Docker Image: " + cName + " pulled")
+}
+
+func handleKillContainer(index string) {
+	f := exec.Command("docker", "ps", "--format", "table {{.ID}}")
+	stdout, _ := f.CombinedOutput()
+	data := strings.Split(string(stdout), "\n")
+	deletedIndex, err := strconv.ParseInt(index, 10, 64)
+	if err != nil {
+		fmt.Println(err)
+	}
+	total := len(data)
+	if total > 2 {
+		total = total - 2
+	}
+	idel := int(deletedIndex)
+
+	if idel >= total {
+		fmt.Println("only found " + strconv.Itoa(total) + " containers")
+		return
+	} else {
+		fmt.Println("Killing Docker Container: " + data[deletedIndex+1] + " ...")
+		f := exec.Command("docker", "kill", data[deletedIndex+1])
+		stdout, _ := f.CombinedOutput()
+		fmt.Println(string(stdout))
+	}
 }
