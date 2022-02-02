@@ -3,6 +3,7 @@ package DockerServices
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 
 	"github.com/karim-w/Ajax/Utils/ExecuteCommandsUtility"
 )
@@ -17,10 +18,21 @@ func DockerService(args map[string]string) {
 }
 
 func handleListContainers() {
-	fmt.Println("Listing Containers...")
-	f := exec.Command("docker", "ps")
+	f := exec.Command("docker", "ps", "--format", "table {{.ID}}//\\//\\{{.Labels}}//\\//\\")
 	stdout, _ := f.CombinedOutput()
-	fmt.Println(string(stdout))
+	stdout = []byte(strings.ReplaceAll(string(stdout), "\n", ""))
+	data := strings.Split(string(stdout), "//\\//\\")
+	data = data[2:]
+	fmt.Println("#\tContainerID\t\t Label")
+	fmt.Println("--------------------------------------------------------------------------------------------")
+	// max := len(data)
+	for i, v := range data {
+		if i%2 != 0 {
+			index := i/2 + 1
+			f := fmt.Sprintf("%d\t%s\t\t%s", index, data[i-1], v)
+			fmt.Println(f)
+		}
+	}
 }
 
 func handlePullContainer(cName string) {
