@@ -1,4 +1,4 @@
-module github.com/karim-w
+module github.com/karim-w/Ajax
 
 go 1.17
 

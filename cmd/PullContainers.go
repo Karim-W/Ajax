@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/karim-w/Utils/ExecuteCommandsUtility"
+	"github.com/karim-w/Ajax/Utils/ExecuteCommandsUtility"
 	"github.com/spf13/cobra"
 )
 
