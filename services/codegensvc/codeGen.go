@@ -31,24 +31,7 @@ func handleGenerateApiController(args string) {
 	apiFile := strings.ReplaceAll(templates.APIControllerGin, "{{.Name}}", cap)
 	apiFile = strings.ReplaceAll(apiFile, "{{.name}}", smol)
 	filename := smol + "Controller.go"
-	var _, err = os.Stat(filename)
-	if os.IsNotExist(err) {
-		if _, err := os.Create(filename); err != nil {
-			fmt.Println(err)
-			return
-		} else {
-			if file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660); err != nil {
-				fmt.Println(err)
-				return
-			} else {
-				defer file.Close()
-				fmt.Fprintf(file, "%s\n", apiFile)
-			}
-		}
-	} else {
-		fmt.Println("File already exists!", filename)
-		return
-	}
+	writeTofile(filename, apiFile)
 }
 
 func handleGenerateService(args string) {
@@ -58,24 +41,7 @@ func handleGenerateService(args string) {
 	apiFile := strings.ReplaceAll(templates.SvcTemplate, "{{.Name}}", cap)
 	apiFile = strings.ReplaceAll(apiFile, "{{.name}}", smol)
 	filename := smol + "Service.go"
-	var _, err = os.Stat(filename)
-	if os.IsNotExist(err) {
-		if _, err := os.Create(filename); err != nil {
-			fmt.Println(err)
-			return
-		} else {
-			if file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660); err != nil {
-				fmt.Println(err)
-				return
-			} else {
-				defer file.Close()
-				fmt.Fprintf(file, "%s\n", apiFile)
-			}
-		}
-	} else {
-		fmt.Println("File already exists!", filename)
-		return
-	}
+	writeTofile(filename, apiFile)
 }
 
 func handleGenerateRouter(args string) {
@@ -84,23 +50,7 @@ func handleGenerateRouter(args string) {
 	case "gin":
 		fmt.Println("Generating Gin Index page")
 		filename := "ginRouter.go"
-		var _, err = os.Stat(filename)
-		if os.IsNotExist(err) {
-			if _, err := os.Create(filename); err != nil {
-				fmt.Println(err)
-				return
-			} else {
-				if file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660); err != nil {
-					fmt.Println(err)
-					return
-				} else {
-					defer file.Close()
-					fmt.Fprintf(file, "%s\n", templates.GinRouterTemplate)
-				}
-			}
-		} else {
-			fmt.Println("File already exists!", filename)
-		}
+		writeTofile(filename, templates.GinRouterTemplate)
 	default:
 		fmt.Println("Unknown Router Type")
 
