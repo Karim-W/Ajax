@@ -1,4 +1,4 @@
-package DockerServices
+package dockersvc
 
 import (
 	"fmt"
@@ -16,8 +16,33 @@ func DockerService(args map[string]string) {
 		handlePullContainer(args["get"])
 	} else if args["kill"] != "" {
 		handleKillContainer(args["kill"])
+	} else if args["pregen"] != "" {
+		handlePregenContainer(args["pregen"])
 	}
+}
 
+func handlePregenContainer(cName string) {
+	fmt.Println("Generating Docker Container: " + cName + " ...")
+	fmt.Println(DBExamples[cName])
+	arr := strings.Split(DBExamples[cName], " ")
+	cm := exec.Command(arr[0], arr[1:]...)
+	c := make(chan struct{})
+	go ExecuteCommandsUtility.StreamCommandOutput(cm, c)
+	c <- struct{}{}
+	cm.Start()
+	<-c
+	if err := cm.Wait(); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Docker Image: " + cName + " pulled")
+
+}
+
+var DBExamples = map[string]string{
+	"redis":      "docker run --name my-redis -p 6379:6379 -d redis",
+	"mssql":      `docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=secret" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2019-latest`,
+	"postgres":   "--name=pg -p 5432:5432 -e POSTGRES_PASSWORD=secret postgres:13",
+	"helloWorld": "docker run -p 8080:8080 -d hello-world",
 }
 
 func handleListContainers() {
