@@ -25,7 +25,7 @@ func {{.Name}}ControllerProvider() *{{.name}}ControllerImpl {
 	return &{{.name}}ControllerImpl{}
 }
 
-var {{.Name}}ControllerDependency = fx.option(fx.Provide({{.Name}}ControllerProvider))
+var {{.Name}}ControllerDependency = fx.Option(fx.Provide({{.Name}}ControllerProvider))
 
 //=============================================	  	 Router Functions		========================================================
 

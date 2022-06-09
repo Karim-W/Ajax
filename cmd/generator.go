@@ -13,7 +13,11 @@ var GenCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		commands := make(map[string]string, 3)
 		controller := cmd.Flag("controller").Value.String()
+		service := cmd.Flag("service").Value.String()
+		router := cmd.Flag("router").Value.String()
 		commands["controller"] = controller
+		commands["service"] = service
+		commands["router"] = router
 		codegensvc.CodeGenerator(commands)
 	},
 }
@@ -21,4 +25,5 @@ var GenCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(GenCmd)
 	GenCmd.Flags().StringP("controller", "c", "", "Generate Api Controller")
+	GenCmd.Flags().StringP("service", "s", "", "Generate Api Service")
 }

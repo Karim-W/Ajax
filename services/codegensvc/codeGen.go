@@ -15,7 +15,8 @@ func CodeGenerator(args map[string]string) {
 		fmt.Println("Listing Code Generators")
 	} else if args["controller"] != "" {
 		handleGenerateApiController(args["controller"])
-	} else if args["kill"] != "" {
+	} else if args["service"] != "" {
+		handleGenerateService(args["service"])
 	} else if args["get"] != "" {
 	} else if args["pregen"] != "" {
 		fmt.Println("Pregen")
@@ -29,6 +30,33 @@ func handleGenerateApiController(args string) {
 	apiFile := strings.ReplaceAll(templates.APIControllerGin, "{{.Name}}", cap)
 	apiFile = strings.ReplaceAll(apiFile, "{{.name}}", smol)
 	filename := smol + "Controller.go"
+	var _, err = os.Stat(filename)
+	if os.IsNotExist(err) {
+		if _, err := os.Create(filename); err != nil {
+			fmt.Println(err)
+			return
+		} else {
+			if file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660); err != nil {
+				fmt.Println(err)
+				return
+			} else {
+				defer file.Close()
+				fmt.Fprintf(file, "%s\n", apiFile)
+			}
+		}
+	} else {
+		fmt.Println("File already exists!", filename)
+		return
+	}
+}
+
+func handleGenerateService(args string) {
+	fmt.Println("Generating Service: " + args)
+	cap := cases.Title(language.Und, cases.NoLower).String(args)
+	smol := cases.Lower(language.Und).String(args)
+	apiFile := strings.ReplaceAll(templates.SvcTemplate, "{{.Name}}", cap)
+	apiFile = strings.ReplaceAll(apiFile, "{{.name}}", smol)
+	filename := smol + "Service.go"
 	var _, err = os.Stat(filename)
 	if os.IsNotExist(err) {
 		if _, err := os.Create(filename); err != nil {
