@@ -19,8 +19,8 @@ func CodeGenerator(args map[string]string) {
 		handleGenerateService(args["service"])
 	} else if args["router"] != "" {
 		handleGenerateRouter(args["router"])
-	} else if args["pregen"] != "" {
-		fmt.Println("Pregen")
+	} else if args["index"] != "" {
+		handleGenerateIndexPage(args["index"])
 	}
 }
 
@@ -82,7 +82,7 @@ func handleGenerateRouter(args string) {
 	lArgs := cases.Lower(language.Und).String(args)
 	switch lArgs {
 	case "gin":
-		fmt.Println("Generating Gin Router")
+		fmt.Println("Generating Gin Index page")
 		filename := "ginRouter.go"
 		var _, err = os.Stat(filename)
 		if os.IsNotExist(err) {
@@ -104,5 +104,40 @@ func handleGenerateRouter(args string) {
 	default:
 		fmt.Println("Unknown Router Type")
 
+	}
+}
+
+func handleGenerateIndexPage(args string) {
+	fmt.Println("Generating Index Page")
+	lArgs := cases.Lower(language.Und).String(args)
+	filename := "index.html"
+	switch lArgs {
+	case "gin":
+		fmt.Println("Generating Gin Router")
+		writeTofile(filename, templates.GinIndexHtml)
+	default:
+		fmt.Println("Unknown Router Type")
+
+	}
+}
+
+func writeTofile(fileName string, content string) {
+	var _, err = os.Stat(fileName)
+	if os.IsNotExist(err) {
+		if _, err := os.Create(fileName); err != nil {
+			fmt.Println(err)
+			return
+		} else {
+			if file, err := os.OpenFile(fileName, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660); err != nil {
+				fmt.Println(err)
+				return
+			} else {
+				defer file.Close()
+				fmt.Fprintf(file, "%s\n", content)
+			}
+		}
+	} else {
+		fmt.Println("File already exists!", fileName)
+		return
 	}
 }

@@ -15,9 +15,11 @@ var GenCmd = &cobra.Command{
 		controller := cmd.Flag("controller").Value.String()
 		service := cmd.Flag("service").Value.String()
 		router := cmd.Flag("router").Value.String()
+		index := cmd.Flag("index").Value.String()
 		commands["controller"] = controller
 		commands["service"] = service
 		commands["router"] = router
+		commands["index"] = index
 		codegensvc.CodeGenerator(commands)
 	},
 }
@@ -27,4 +29,5 @@ func init() {
 	GenCmd.Flags().StringP("controller", "c", "", "Generate Api Controller")
 	GenCmd.Flags().StringP("service", "s", "", "Generate Api Service")
 	GenCmd.Flags().StringP("router", "r", "", "Generate Api Router")
+	GenCmd.Flags().StringP("index", "i", "", "Generate Index Page")
 }
