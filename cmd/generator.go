@@ -26,4 +26,5 @@ func init() {
 	RootCmd.AddCommand(GenCmd)
 	GenCmd.Flags().StringP("controller", "c", "", "Generate Api Controller")
 	GenCmd.Flags().StringP("service", "s", "", "Generate Api Service")
+	GenCmd.Flags().StringP("router", "r", "", "Generate Api Router")
 }
