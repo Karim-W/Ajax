@@ -46,7 +46,7 @@ var DBExamples = map[string]string{
 }
 
 func handleListContainers() {
-	f := exec.Command("docker", "ps", "--format", "table {{.ID}}//\\//\\{{.Labels}}//\\//\\")
+	f := exec.Command("docker", "ps", "--format", "table {{.ID}}//\\//\\{{.Names}}//\\//\\")
 	stdout, _ := f.CombinedOutput()
 	stdout = []byte(strings.ReplaceAll(string(stdout), "\n", ""))
 	data := strings.Split(string(stdout), "//\\//\\")
