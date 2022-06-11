@@ -1,3 +1,4 @@
+[![wakatime](https://wakatime.com/badge/user/d590b0ec-4cf4-4459-97f5-00b384f4b2c0/project/4f244cfd-f129-47d6-9f90-1d396ae223ee.svg)](https://wakatime.com/badge/user/d590b0ec-4cf4-4459-97f5-00b384f4b2c0/project/4f244cfd-f129-47d6-9f90-1d396ae223ee)
 # Ajax
 
 Ajax is helper CLI tool that offers the following functionalites: 
@@ -7,15 +8,15 @@ Ajax is helper CLI tool that offers the following functionalites:
 ## Table of Contents
 - Ajax
   - [Usage](#usage)
-    - [Docker](#docker)
-      - [List](#list)
-      - [Get](#get)
-      - [Pre-generate](#pre-generate)
-    - [Generate](#generate)
-      - [Gin Api Controller](#gin-api-controller)
-      - [Go Service](#go-serivce)
-      - [Router](#router)
-      - [IndexPage](#index-page)
+- [Docker](#docker)
+  - [List](#list)
+  - [Get](#get)
+  - [Pre-generate](#pre-generate)
+- [Generate](#generate)
+  - [Gin Api Controller](#gin-api-controller)
+  - [Go Service](#go-serivce)
+  - [Router](#router)
+  - [IndexPage](#index-page)
 
 ## Usage
 ### Docker
@@ -80,3 +81,20 @@ Called to generate a index page for the router
 | :----: | :---------- |
 | gin| gin router|
 
+## Functionalities that are implemented:
+- Docker
+  - List running Docker containers
+  - Kill Docker container
+  - Pull Docker image
+  - Run pre-generated Docker services
+- MSSQL/SQL Server/Azure SQL
+- PostgreSQL
+- Redis
+- Hello World
+- Code Generation
+  - Gin Api Controller
+  - Go Serivce
+  - Router
+- Gin Router
+  - Index Page
+- Gin Router

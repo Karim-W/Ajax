@@ -1,6 +1,6 @@
 package templates
 
-var APIControllerGin = `package controllers
+var APIControllerGin = `package {{.pkg}}
 import (
 	"net/http"
 

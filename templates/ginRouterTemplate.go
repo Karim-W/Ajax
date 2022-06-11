@@ -1,7 +1,7 @@
 package templates
 
 var GinRouterTemplate = `
-package router
+package {{.pkg}}
 
 import (
 	"context"

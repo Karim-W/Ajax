@@ -1,6 +1,6 @@
 package templates
 
-var SvcTemplate = `package services
+var SvcTemplate = `package {{.pkg}}
 
 type {{.Name}}Service interface {
 }

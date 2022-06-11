@@ -30,6 +30,7 @@ func handleGenerateApiController(args string) {
 	smol := cases.Lower(language.Und).String(args)
 	apiFile := strings.ReplaceAll(templates.APIControllerGin, "{{.Name}}", cap)
 	apiFile = strings.ReplaceAll(apiFile, "{{.name}}", smol)
+	apiFile = strings.ReplaceAll(apiFile, "{{.pkg}}", getFileName())
 	filename := smol + "Controller.go"
 	writeTofile(filename, apiFile)
 }
@@ -38,10 +39,11 @@ func handleGenerateService(args string) {
 	fmt.Println("Generating Service: " + args)
 	cap := cases.Title(language.Und, cases.NoLower).String(args)
 	smol := cases.Lower(language.Und).String(args)
-	apiFile := strings.ReplaceAll(templates.SvcTemplate, "{{.Name}}", cap)
-	apiFile = strings.ReplaceAll(apiFile, "{{.name}}", smol)
+	svcFile := strings.ReplaceAll(templates.SvcTemplate, "{{.Name}}", cap)
+	svcFile = strings.ReplaceAll(svcFile, "{{.name}}", smol)
+	svcFile = strings.ReplaceAll(svcFile, "{{.pkg}}", getFileName())
 	filename := smol + "Service.go"
-	writeTofile(filename, apiFile)
+	writeTofile(filename, svcFile)
 }
 
 func handleGenerateRouter(args string) {
@@ -50,7 +52,7 @@ func handleGenerateRouter(args string) {
 	case "gin":
 		fmt.Println("Generating Gin Index page")
 		filename := "ginRouter.go"
-		writeTofile(filename, templates.GinRouterTemplate)
+		writeTofile(filename, strings.ReplaceAll(templates.GinRouterTemplate, "{{.pkg}}", getFileName()))
 	default:
 		fmt.Println("Unknown Router Type")
 
@@ -69,6 +71,15 @@ func handleGenerateIndexPage(args string) {
 		fmt.Println("Unknown Router Type")
 
 	}
+}
+
+func getFileName() string {
+	path, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		panic(err)
+	}
+	return strings.Split(path, "/")[len(strings.Split(path, "/"))-1]
 }
 
 func writeTofile(fileName string, content string) {
