@@ -41,7 +41,7 @@ func handlePregenContainer(cName string) {
 var DBExamples = map[string]string{
 	"redis":      "docker run --name my-redis -p 6379:6379 -d redis",
 	"mssql":      `docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=secret" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2019-latest`,
-	"postgres":   "--name=pg -p 5432:5432 -e POSTGRES_PASSWORD=secret postgres:13",
+	"postgres":   "docker container run -d --name=pg -p 5432:5432 -e POSTGRES_PASSWORD=secret postgres:13",
 	"helloWorld": "docker run -p 8080:8080 -d hello-world",
 }
 
